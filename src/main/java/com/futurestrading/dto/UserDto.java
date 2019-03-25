@@ -1,7 +1,8 @@
-package com.futurestrading.entity;
+package com.futurestrading.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * @author sensor
  * @since 2019-03-25
  */
-public class User implements Serializable {
+public class UserDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,11 +27,6 @@ public class User implements Serializable {
      * 用户名
      */
     private String username;
-
-    /**
-     * 密码
-     */
-    private String password;
 
     /**
      * 电话
@@ -58,24 +54,6 @@ public class User implements Serializable {
         return username;
     }
 
-    public User(String username, String password, String tel, String email, Double account) {
-        this.username = username;
-        this.password = password;
-        this.tel = tel;
-        this.email = email;
-        this.account = account;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
     public String getTel() {
         return tel;
     }
@@ -103,7 +81,6 @@ public class User implements Serializable {
         return "User{" +
         "id=" + id +
         ", username=" + username +
-        ", password=" + password +
         ", tel=" + tel +
         ", email=" + email +
         ", account=" + account +

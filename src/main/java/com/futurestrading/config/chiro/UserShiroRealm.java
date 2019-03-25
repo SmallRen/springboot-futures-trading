@@ -1,5 +1,7 @@
 package com.futurestrading.config.chiro;
 
+import com.futurestrading.entity.User;
+import com.futurestrading.service.IUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthenticatingRealm;
@@ -10,23 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserShiroRealm extends AuthenticatingRealm {
     private static final Logger logger = LoggerFactory.getLogger(UserShiroRealm.class);
-    // @Autowired
-    //UserService userService;
+    @Autowired
+    IUserService userService;
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken token) throws AuthenticationException {
         //1. 把 AuthenticationToken 转换为 UsernamePasswordToken
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
-        //2. 从 UsernamePasswordToken 中来获取 username
         String username = upToken.getUsername();
-        char[] password = upToken.getPassword();
-      /*  User user = userService.getUser(username);
+        User user = userService.getUser(username);
         if (user != null) {
-            Object credentials = user.getPassword(); //"fc1709d0a95a6be30bc5926fdb7f22f4";
-            user.setPassword("");
-            Object principal = user.getUsername();
             //2). credentials: 密码.
+            Object credentials = user.getPassword();
+            Object principal = user.getUsername();
             //3). realmName: 当前 realm 对象的 name. 调用父类的 getName() 方法即可
             String realmName = getName();
             //4). 盐值.
@@ -34,7 +33,7 @@ public class UserShiroRealm extends AuthenticatingRealm {
             SimpleAuthenticationInfo info = null;
             info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
             return info;
-        }*/
+        }
         return null;
 
     }

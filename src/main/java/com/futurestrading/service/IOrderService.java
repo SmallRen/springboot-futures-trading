@@ -1,5 +1,6 @@
 package com.futurestrading.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.futurestrading.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-03-25
  */
 public interface IOrderService extends IService<Order> {
-
+    /**
+     * 查询用户交易信息
+     * @param userId
+     * @return
+     */
+    IPage<Order> selectByUserId(Integer userId, long current);
 }
