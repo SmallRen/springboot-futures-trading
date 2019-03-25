@@ -11,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author sensor
- * @since 2019-03-24
+ * @since 2019-03-25
  */
 public class Trading implements Serializable {
 
@@ -22,6 +22,7 @@ public class Trading implements Serializable {
 
     /**
      * 交易日期
+
      */
     private LocalDateTime trddt;
 
@@ -47,7 +48,7 @@ public class Trading implements Serializable {
      * 日开盘价
 
      */
-    private String fdt003;
+    private Double fdt003;
 
     /**
      * 日最高价
@@ -81,13 +82,11 @@ public class Trading implements Serializable {
 
     /**
      * 持仓量
-
      */
     private Integer fdt011;
 
     /**
      * 成交金额
-
      */
     private Double fdt013;
 
@@ -126,11 +125,11 @@ public class Trading implements Serializable {
     public void setFdt001(String fdt001) {
         this.fdt001 = fdt001;
     }
-    public String getFdt003() {
+    public Double getFdt003() {
         return fdt003;
     }
 
-    public void setFdt003(String fdt003) {
+    public void setFdt003(Double fdt003) {
         this.fdt003 = fdt003;
     }
     public Double getFdt004() {

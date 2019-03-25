@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author sensor
- * @since 2019-03-24
+ * @since 2019-03-25
  */
 public interface TradingMapper extends BaseMapper<Trading> {
 

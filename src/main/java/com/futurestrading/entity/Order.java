@@ -3,6 +3,7 @@ package com.futurestrading.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
 /**
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author sensor
- * @since 2019-03-24
+ * @since 2019-03-25
  */
 public class Order implements Serializable {
 
@@ -26,12 +27,12 @@ public class Order implements Serializable {
     /**
      * 用户id
      */
-    private Integer uId;
+    private Integer userId;
 
     /**
      * 交易时间
      */
-    private LocalDateTime time;
+    private LocalDateTime cTime;
 
     /**
      * 交易品种
@@ -44,7 +45,7 @@ public class Order implements Serializable {
     private String fdt001;
 
     /**
-     * 选择的策略
+     * 交易策略
      */
     private String strategy;
 
@@ -54,9 +55,15 @@ public class Order implements Serializable {
     private Double tradeNum;
 
     /**
-     * 交易后账户余额（元）
+     * 交易后账户余额
      */
     private Double accountNum;
+
+    /**
+     * 合约代码
+     */
+    @TableField("Agmtcd")
+    private String Agmtcd;
 
     public Integer getOrderId() {
         return orderId;
@@ -65,19 +72,19 @@ public class Order implements Serializable {
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
-    public Integer getuId() {
-        return uId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setuId(Integer uId) {
-        this.uId = uId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getcTime() {
+        return cTime;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setcTime(LocalDateTime cTime) {
+        this.cTime = cTime;
     }
     public String getTrdvar() {
         return trdvar;
@@ -114,18 +121,26 @@ public class Order implements Serializable {
     public void setAccountNum(Double accountNum) {
         this.accountNum = accountNum;
     }
+    public String getAgmtcd() {
+        return Agmtcd;
+    }
+
+    public void setAgmtcd(String Agmtcd) {
+        this.Agmtcd = Agmtcd;
+    }
 
     @Override
     public String toString() {
         return "Order{" +
         "orderId=" + orderId +
-        ", uId=" + uId +
-        ", time=" + time +
+        ", userId=" + userId +
+        ", cTime=" + cTime +
         ", trdvar=" + trdvar +
         ", fdt001=" + fdt001 +
         ", strategy=" + strategy +
         ", tradeNum=" + tradeNum +
         ", accountNum=" + accountNum +
+        ", Agmtcd=" + Agmtcd +
         "}";
     }
 }

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author sensor
- * @since 2019-03-24
+ * @since 2019-03-25
  */
 public interface IUserService extends IService<User> {
 
