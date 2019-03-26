@@ -80,7 +80,7 @@ public class UserController {
     @PostMapping("/register")
     public boolean register(@RequestParam("username") String username, @RequestParam("password") String password,
                             @RequestParam("tel") String tel, @RequestParam("email") String email) {
-        if (!userService.checkEmail(email) && userService.checkTel(tel) && userService.checkUserName(username)) {
+        if (!userService.checkEmail(email) && !userService.checkTel(tel) && !userService.checkUserName(username)) {
             return userService.save(new User(username, password, tel, email, 10000.00));
         }
         return false;
@@ -107,7 +107,7 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/checkUserName")
-    public boolean checkUser(@RequestParam("email") String username) {
+    public boolean checkUser(@RequestParam("username") String username) {
         return userService.getUser(username) == null ? false : true;
     }
 

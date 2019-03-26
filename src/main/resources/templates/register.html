@@ -19,10 +19,10 @@
         </div>
         <div class="col-md-5" style="margin-top: 10%;">
 
-            <form  class="modal-content" style="padding: 30px">
+            <form class="modal-content" style="padding: 30px">
                 <h5 style="text-align: center">用户注册</h5>
                 <br>
-                <div class="form-inline has-success" >
+                <div class="form-inline has-success">
                     <label for="username">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</label>
                     <input type="username" class="form-control col-md-9" id="username" placeholder="请输入用户名">
                 </div>
@@ -44,13 +44,33 @@
                 <br>
 
 
-
-                <button type="button" onclick="javascript:location.href='/register'" class="btn btn-primary">注册</button>
+                <button type="button" onClick="register()" class="btn btn-primary">注册</button>
                 <br>
-                <button type="button" onclick="javascript:location.href='/login'" class="btn btn-primary">登录</button>
+                <button type="button" onClick="javascript:location.href='/login'" class="btn btn-primary">登录</button>
             </form>
         </div>
         <div class="col">
+        </div>
+    </div>
+</div>
+<div th:include="common/modal"></div>
+<div class="modal fade" tabindex="-1" role="dialog" id="loginModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="msg">注册成功！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        onclick="window.location.href='/login'">确定
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -59,4 +79,114 @@
 <script th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
 <script th:src="@{/static/js/popper.min.js}"></script>
 <script th:src="@{/static/js/bootstrap.min.js}"></script>
+<script>
+    function register() {
+
+        var username = $("#username").val();
+        var email = $("#email").val();
+        var tel = $("#tel").val();
+        var password = $("#password").val();
+        if (username == '' || email == '' || tel == '' || password == '') {
+
+            $("#msg").text("不能有空的值！")
+            $("#myModal").modal("toggle")
+            return
+        }
+        if (username != '') {
+            $.ajax({
+                type: "POST",
+                url: '/user/checkUserName',
+                data: {username: username},
+                dataType: 'TEXT',
+                cache: 'false',
+                async: 'false',
+                success: function (data) {
+                    debugger
+                    console.log(data)
+                    if (data == 'true') {
+                        $("#msg").text("用户名已存在")
+                        $("#myModal").modal("toggle")
+                        return;
+                    } else {
+
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('失败' + textStatus + XMLHttpRequest.status + errorThrown)
+                }
+            });
+
+        }
+        if (email != '') {
+            $.ajax({
+                type: "POST",
+                url: '/user/checkEmail',
+                data: {email: email},
+                dataType: 'TEXT',
+                cache: 'false',
+                async: 'false',
+                success: function (data) {
+                    debugger
+                    console.log(data)
+                    if (data == 'true') {
+                        $("#msg").text( "邮箱已被绑定")
+                        $("#myModal").modal("toggle")
+                        return;
+                    } else {
+
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('失败' + textStatus + XMLHttpRequest.status + errorThrown)
+                }
+            });
+        }
+        if (tel != '') {
+            $.ajax({
+                type: "POST",
+                url: '/user/checkTel',
+                data: {tel: tel},
+                dataType: 'TEXT',
+                cache: 'false',
+                async: 'false',
+                success: function (data) {
+                    debugger
+                    console.log(data)
+                    if (data == 'true') {
+                        $("#msg").text( "手机号已被绑定")
+                        $("#myModal").modal("toggle")
+                        return;
+                    } else {
+
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('失败' + textStatus + XMLHttpRequest.status + errorThrown)
+                }
+            });
+
+        }
+        confirmRegister(username, password, email, tel);
+    }
+
+    function confirmRegister(username, password, email, tel) {
+        $.ajax({
+            type: "POST",
+            url: '/user/register',
+            data: {username: username, password: password, email: email, tel: tel},
+            dataType: 'TEXT',
+            cache: 'false',
+            async: 'false',
+            success: function (data) {
+                if (data == 'true') {
+                    $("#msg").text("注册成功！")
+                    $("#loginModal").modal("toggle")
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('失败' + textStatus + XMLHttpRequest.status + errorThrown)
+            }
+        });
+    }
+</script>
 </html>

@@ -1,6 +1,5 @@
 package com.futurestrading.service;
 
-import com.futurestrading.dto.UserDto;
 import com.futurestrading.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -21,7 +20,7 @@ public interface IUserService extends IService<User> {
      * @param username
      * @return
      */
-    UserDto getUserDto(String username);
+    User getUserDto(String username);
 
     /**
      * 获取用户信息

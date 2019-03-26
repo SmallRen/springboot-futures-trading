@@ -32,5 +32,5 @@ public interface ITradingService extends IService<Trading> {
      * @param agmtcd 合约代码
      * @return
      */
-    List<Trading> select(String fdt001, String trdvar, String agmtcd);
+    List<List<String>> select(String fdt001, String trdvar, String agmtcd);
 }

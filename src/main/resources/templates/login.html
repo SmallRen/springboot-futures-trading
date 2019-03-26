@@ -33,7 +33,7 @@
                 </div>
                 <br>
 
-                <button type="button" class="btn btn-primary" onclick="login">登录</button>
+                <button type="button" class="btn btn-primary" onClick="login()">登录</button>
                 <br>
                 <button type="button" onclick="javascript:location.href='/register'" class="btn btn-primary">注册</button>
             </form>
@@ -42,14 +42,44 @@
         </div>
     </div>
 </div>
-
+<div th:include="common/modal"></div>
 </body>
 <script th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
 <script th:src="@{/static/js/popper.min.js}"></script>
 <script th:src="@{/static/js/bootstrap.min.js}"></script>
 <script>
     function login() {
-
+        var username = $("#username").val();
+        var password = $("#password").val();
+        debugger
+        if (username == '' || password == '') {
+            $("#msg").text("用户名或密码不能为空！")
+            $("#myModal").modal("toggle")
+            return
+        }
+        $.ajax({
+            type: "POST",
+            url: "/user/login",
+            data: {username: username, password: password},
+            dataType: 'TEXT',
+            cache: 'false',
+            async: 'false',
+            success: function (data) {
+                console.log(data)
+                if (data == 'unknownUser') {
+                    $("#msg").text("用户不存在")
+                    $("#myModal").modal("toggle")
+                } else if (data == 'validationError') {
+                    $("#msg").text("用户名或密码不正确")
+                    $("#myModal").modal("toggle")
+                } else {
+                    window.location.href = "/index"
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('失败' + textStatus + XMLHttpRequest.status + errorThrown)
+            }
+        });
     }
 </script>
 </html>

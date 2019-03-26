@@ -17,10 +17,6 @@ public class UserDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 用户id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**

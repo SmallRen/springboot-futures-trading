@@ -41,7 +41,7 @@ public class TradingController {
      */
     @ResponseBody
     @GetMapping("/select")
-    public List<Trading> select(String fdt001,String trdvar,String agmtcd) {
+    public List<List<String>> select(String fdt001,String trdvar,String agmtcd) {
         return service.select(fdt001,trdvar,agmtcd);
     }
 

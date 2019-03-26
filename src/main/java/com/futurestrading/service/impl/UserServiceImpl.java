@@ -1,12 +1,10 @@
 package com.futurestrading.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.futurestrading.dto.UserDto;
 import com.futurestrading.entity.User;
 import com.futurestrading.mapper.UserMapper;
 import com.futurestrading.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,16 +20,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
 
     @Override
-    public UserDto getUserDto(String username) {
+    public User getUserDto(String username) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(User::getUsername, username);
         User user = this.getOne(queryWrapper);
-        //pojo的拷贝
-        UserDto userDto = new UserDto();
-        if (user != null) {
-            BeanUtils.copyProperties(user, userDto);
-        }
-        return userDto;
+        return user;
     }
 
     @Override
