@@ -8,17 +8,43 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}">
 </head>
 <body>
-<img width="550" th:src="@{/static/img/logo.png}" style="margin: 30px"/>
+<div th:include="common/nav"></div>
 <div class="container">
-
+    <h3 class="text-center">用户订单</h3>
     <div class="row">
-
 
         <div class="col">
 
         </div>
-        <div class="col-md-5" style="margin-top: 10%;">
- 
+        <div class="col-md-12">
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                <th> 订单id</th>
+                <th> 交易时间</th>
+                <th> 交易品种</th>
+                <th> 交易所代码</th>
+                <th> 交易策略</th>
+                <th> 交易金额</th>
+                <th> 交易后账户余额</th>
+                <th>合约代码</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr  th:each="order:${session.order}" >
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${#temporals.format(order.cTime,'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${order.trdvar}"></td>
+                    <td th:text="${order.fdt001}"></td>
+                    <td th:text="${order.strategy}"></td>
+                    <td th:text="${order.tradeNum}"></td>
+                    <td th:text="${order.accountNum}"></td>
+                    <td th:text="${order.agmtcd}">1</td>
+                </tr>
+                </tbody>
+            </table>
+
         </div>
         <div class="col">
         </div>

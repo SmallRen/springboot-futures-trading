@@ -1,15 +1,18 @@
 package com.futurestrading.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.futurestrading.entity.Order;
-import com.futurestrading.service.IOrderService;
+import com.futurestrading.entity.TOrder;
+import com.futurestrading.entity.User;
+import com.futurestrading.service.ITOrderService;
+import com.futurestrading.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -23,7 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/order")
 public class OrderController {
     @Autowired
-    IOrderService service;
+    ITOrderService service;
+    @Autowired
+    HttpSession httpSession;
 
     /**
      * 查询交易品种
@@ -32,7 +37,7 @@ public class OrderController {
      */
     @ResponseBody
     @GetMapping("/all")
-    public IPage<Order> all(Integer userId, long current) {
+    public IPage<TOrder> all(Integer userId, long current) {
         return service.selectByUserId(userId, current);
     }
 
@@ -43,8 +48,15 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @GetMapping("/insert")
-    public boolean insert(Order order) {
+    @PostMapping("/insert")
+    public boolean insert(TOrder order) {
+        QueryWrapper<TOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().orderByDesc(TOrder::getOrderId);
+        List<TOrder> tOrder = service.list(queryWrapper);
+        User user = (User) httpSession.getAttribute("userInfo");
+        order.setcTime(DateUtils.fromDate(new Date()));
+        order.setUserId(user.getId());
+        order.setAccountNum(tOrder.get(0).getAccountNum()-order.getTradeNum());
         return service.save(order);
     }
 

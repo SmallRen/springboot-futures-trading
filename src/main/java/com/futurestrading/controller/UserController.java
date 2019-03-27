@@ -1,8 +1,11 @@
 package com.futurestrading.controller;
 
 
+import com.futurestrading.entity.TOrder;
 import com.futurestrading.entity.User;
+import com.futurestrading.service.ITOrderService;
 import com.futurestrading.service.IUserService;
+import com.futurestrading.utils.DateUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * <p>
@@ -30,9 +34,12 @@ public class UserController {
     HttpSession httpSession;
     @Autowired
     IUserService userService;
+    @Autowired
+    ITOrderService orderService;
 
     /**
      * 用户登录
+     *
      * @param username
      * @param password
      * @return
@@ -70,6 +77,7 @@ public class UserController {
 
     /**
      * 用户注册
+     *
      * @param username
      * @param password
      * @param tel
@@ -81,13 +89,25 @@ public class UserController {
     public boolean register(@RequestParam("username") String username, @RequestParam("password") String password,
                             @RequestParam("tel") String tel, @RequestParam("email") String email) {
         if (!userService.checkEmail(email) && !userService.checkTel(tel) && !userService.checkUserName(username)) {
-            return userService.save(new User(username, password, tel, email, 10000.00));
+
+
+            boolean save = userService.save(new User(username, password, tel, email, 10000.00));
+            User user = userService.getUser(username);
+            if (save) {
+                TOrder order = new TOrder();
+                order.setAccountNum(10000.00);
+                order.setUserId(user.getId());
+                order.setcTime(DateUtils.fromDate(new Date()));
+                orderService.save(order);
+            }
+            return save;
         }
         return false;
     }
 
     /**
      * 检查手机号是否绑定
+     *
      * @param tel
      * @return
      */
@@ -102,6 +122,7 @@ public class UserController {
 
     /**
      * 检查用户名是否注册
+     *
      * @param username
      * @return
      */
@@ -113,6 +134,7 @@ public class UserController {
 
     /**
      * 检查邮箱是否绑定
+     *
      * @param email
      * @return
      */
@@ -124,13 +146,20 @@ public class UserController {
 
     /**
      * 修改用户
+     *
      * @param user
      * @return
      */
-    @GetMapping("/update")
-    public String update(User user) {
-         userService.update(user,null);
-         return  "userInfo";
+    @ResponseBody
+    @PostMapping("/update")
+    public boolean update(User user) {
+        boolean b = userService.updateById(user);
+        if (b) {
+            httpSession.setAttribute("userInfo", userService.getById(user.getId()));
+        }
+        return b;
+
+
     }
 
 }

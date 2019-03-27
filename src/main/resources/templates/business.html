@@ -10,12 +10,12 @@
 <body>
 <div th:include="common/nav"></div>
 
-<div class="container">
+
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-inline">
-                <label class="col-sm-4 control-label">交易所</label>
-                <select class="form-control col-sm-8" id="fdt001">
+                <label class="col-sm-6 control-label">交易所</label>
+                <select class="form-control col-sm-6" id="fdt001">
                     <option value="DCE">大连交易所</option>
                     <option value="SHFE">上海交易所</option>
                     <option value="CZCE">郑州交易所</option>
@@ -23,28 +23,45 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
 
             <div class="form-inline">
-                <label class="col-sm-5 control-label">合约代码</label>
-                <select class="form-control " id="agmtcd">
+                <label class="col-sm-6 control-label">合约代码</label>
+                <select class="form-control  col-sm-6" id="agmtcd">
                     <option th:each="agmtcd:${#request.getAttribute('agmtcd')}" th:value="${agmtcd}"
                             th:text="${agmtcd}"></option>
 
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-inline">
-                <label class="col-sm-5 control-label">交易品种</label>
-                <select class="form-control" id="trdvar">
+                <label class="col-sm-6 control-label">交易品种</label>
+                <select class="form-control col-sm-6" id="trdvar">
                     <option th:each="trdvar:${#request.getAttribute('trdvar')}" th:value="${trdvar}"
                             th:text="${trdvar}"></option>
 
                 </select>
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="form-inline">
+                <label class="col-sm-6 control-label">交易策略</label>
+                <select class="form-control col-sm-6" id="strategy">
+                    <option value="跨期套利策略">跨期套利策略</option>
+                    <option value="D_Thrust策略">D_Thrust策略</option>
+                    <option value="双均线策略">双均线策略</option>
+                </select>
+            </div>
+        </div>
         <button type="button" onclick="searchTrading()" class="btn btn-success">查询</button>
+        <div class="col-md-2">
+            <div class="form-inline">
+                <label class="col-sm-6 control-label">交易金额</label>
+                 <input class="form-control col-sm-6" id="tradeNum"  type="text">
+            </div>
+        </div>
+        <button type="button" onclick="business()" class="btn btn-success">交易</button>
     </div>
 
 
@@ -56,14 +73,44 @@
         </div>
 
     </div>
-</div>
+
 <div id="container" style="height: 800px;padding: 50px"></div>
+<div th:include="common/modal"></div>
 </body>
 <script th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
 <script th:src="@{/static/js/popper.min.js}"></script>
 <script th:src="@{/static/js/bootstrap.min.js}"></script>
 <script th:src="@{/static/js/echarts.min.js}"></script>
 <script type="text/javascript">
+
+    function business() {
+        var fdt001 = $('#fdt001').val();
+        var trdvar = $('#trdvar').val();
+        var agmtcd = $('#agmtcd').val();
+        var strategy = $('#strategy').val();
+        var tradeNum = $('#tradeNum').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/order/insert',
+            data: {fdt001: fdt001, trdvar: trdvar, agmtcd: agmtcd, strategy: strategy, tradeNum: tradeNum},
+            dataType: 'TEXT',
+            cache: false,
+            async: false,
+            success: function (data) {
+                console.log(data)
+                if (data == 'true') {
+                    $("#msg").text("交易成功！")
+                    $("#myModal").modal("toggle")
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('失败' + textStatus + XMLHttpRequest.status + errorThrown)
+            }
+        });
+
+
+    }
     function searchTrading() {
         var fdt001 = $('#fdt001').val();
         var trdvar = $('#trdvar').val();

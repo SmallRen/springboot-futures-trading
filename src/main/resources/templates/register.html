@@ -98,8 +98,8 @@
                 url: '/user/checkUserName',
                 data: {username: username},
                 dataType: 'TEXT',
-                cache: 'false',
-                async: 'false',
+                cache: false,
+                async: false,
                 success: function (data) {
                     debugger
                     console.log(data)
@@ -123,8 +123,8 @@
                 url: '/user/checkEmail',
                 data: {email: email},
                 dataType: 'TEXT',
-                cache: 'false',
-                async: 'false',
+                cache: false,
+                async: false,
                 success: function (data) {
                     debugger
                     console.log(data)
@@ -147,8 +147,8 @@
                 url: '/user/checkTel',
                 data: {tel: tel},
                 dataType: 'TEXT',
-                cache: 'false',
-                async: 'false',
+                cache: false,
+                async: false,
                 success: function (data) {
                     debugger
                     console.log(data)
@@ -175,8 +175,8 @@
             url: '/user/register',
             data: {username: username, password: password, email: email, tel: tel},
             dataType: 'TEXT',
-            cache: 'false',
-            async: 'false',
+            cache: false,
+            async: false,
             success: function (data) {
                 if (data == 'true') {
                     $("#msg").text("注册成功！")
